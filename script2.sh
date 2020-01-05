@@ -31,16 +31,19 @@ date=$(date +%D-%T)
 if [ $cksum = $oldcksum ]; then
 # on compare si la taille est équivalente à l'ancien :
 if [ $taille = $oldtaille ]; then
+echo "le fichier "$nom" n'a pas été modifié !"$date""
 echo "le fichier "$nom" n'a pas été modifié !"$date"" >> /var/log/suid_log 
 #Insert dans la base des tests
 sqlite3 /root/projetbdd/cksum.db "insert into calcul values('$nom',$cksum,$taille,'$date', 'identique');"
 else
 #si la taille nest pas bonne :
+echo " la taille du fichier" $nom "à changé"$date""
 echo " la taille du fichier" $nom "à changé"$date"" >> /var/log/suid_log
 sqlite3 /root/projetbdd/cksum.db "insert into calcul values('$nom',$cksum,$taille,'$date', 'modifié');"
 fi
 else 
 #si le cksum a changé :
+echo " le fichier "$nom" à changé de cksum"$date""
 echo " le fichier "$nom" à changé de cksum"$date"" >> /var/log/suid_log
 sqlite3 /root/projetbdd/cksum.db "insert into calcul values('$nom',$cksum,$taille,'$date', 'modifié');"
 
